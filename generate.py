@@ -51,6 +51,10 @@ def parse_args():
     p.add_argument("--no-fp8", action="store_true",
                     help="Disable FP8 quantization")
 
+    # Image-to-video
+    p.add_argument("--image", type=str, default=None,
+                    help="Path or URL to input image for image-to-video mode")
+
     # LoRA
     p.add_argument("--lora", type=str, default=None,
                     help="HF LoRA repo ID")
@@ -466,10 +470,17 @@ def main():
     print(f"  Output:     {args.output}")
     print(f"=" * 60)
 
-    # --- Step 1: Load base model via LTX2Pipeline ---
-    from diffusers import LTX2Pipeline
+    # --- Step 1: Load base model ---
+    is_i2v = args.image is not None
+    if is_i2v:
+        from diffusers import LTX2ImageToVideoPipeline as PipeClass
+        from diffusers.utils import load_image
+        print(f"  Mode: image-to-video (input: {args.image})")
+    else:
+        from diffusers import LTX2Pipeline as PipeClass
+        print(f"  Mode: text-to-video")
 
-    pipe = LTX2Pipeline.from_pretrained(
+    pipe = PipeClass.from_pretrained(
         args.model,
         torch_dtype=torch.bfloat16,
     )
@@ -503,6 +514,20 @@ def main():
         # Instead, load everything onto CUDA directly. 128GB fits all models.
         pipe.to(device)
 
+    # Fix: Monkey-patch scheduler to prevent off-by-one IndexError on last step.
+    # FlowMatchEulerDiscreteScheduler._init_step_index() uses float equality to
+    # find the starting step index. With use_dynamic_shifting=True (full LTX-2),
+    # shifted sigmas can create near-duplicate timestep values, causing it to
+    # return index 1 instead of 0. This shifts ALL step indices up by 1, so the
+    # last step reads sigmas[N+1] which is out of bounds.
+    # See: https://github.com/huggingface/diffusers/issues/9331
+    import types
+
+    def _safe_init_step_index(self, timestep):
+        self._step_index = self._begin_index if self._begin_index is not None else 0
+
+    pipe.scheduler._init_step_index = types.MethodType(_safe_init_step_index, pipe.scheduler)
+
     # --- Build generation kwargs ---
     gen_kwargs = dict(
         prompt=args.prompt,
@@ -516,13 +541,27 @@ def main():
         frame_rate=24.0,      # Used to compute audio temporal length
     )
 
-    # Distilled sigma schedule
-    try:
-        from diffusers.pipelines.ltx2.utils import DISTILLED_SIGMA_VALUES
-        gen_kwargs["sigmas"] = DISTILLED_SIGMA_VALUES
-        print(f"Using distilled sigma schedule ({len(DISTILLED_SIGMA_VALUES)} values)")
-    except ImportError:
-        print("WARNING: DISTILLED_SIGMA_VALUES not found, using default schedule")
+    # Image-to-video: load and pass input image
+    if is_i2v:
+        gen_kwargs["image"] = load_image(args.image)
+        print(f"  Input image loaded: {args.image}")
+
+    # Distilled sigma schedule — only for distilled models.
+    # The full model uses FlowMatchEulerDiscreteScheduler's default sigmas.
+    is_distilled = "distilled" in args.model.lower()
+    if is_distilled:
+        try:
+            from diffusers.pipelines.ltx2.utils import DISTILLED_SIGMA_VALUES
+            gen_kwargs["sigmas"] = DISTILLED_SIGMA_VALUES
+            print(f"Using distilled sigma schedule ({len(DISTILLED_SIGMA_VALUES)} values)")
+        except ImportError:
+            print("WARNING: DISTILLED_SIGMA_VALUES not found, using default schedule")
+    else:
+        # Full model: let the pipeline calculate sigmas via its default
+        # np.linspace(1.0, 1/steps, steps) schedule with dynamic shifting.
+        # The _init_step_index monkey-patch above prevents the off-by-one crash.
+        print(f"Using full model default sigma schedule ({args.steps} steps, "
+              f"guidance_scale={args.guidance_scale})")
 
     if args.seed is not None:
         gen_kwargs["generator"] = torch.Generator(device=device).manual_seed(args.seed)

@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -r
 # Install diffusers from git main (needed for LTX2Pipeline + connectors)
 # NEVER reinstall torch — it's built for CUDA 13 + sm_110
 RUN PIP_CONSTRAINT="" pip install --no-cache-dir \
-    git+https://github.com/huggingface/diffusers.git \
+    git+https://github.com/huggingface/diffusers.git@5bf248ddd8796b4f4958559429071a28f9b2dd3a \
     transformers>=4.48.0 \
     accelerate \
     safetensors \

@@ -90,7 +90,7 @@ run_render "clip01_the_bedroom" \
   --prompt "A slow dolly-in through a dark residential hallway at night toward a cracked bedroom door at the far end. Cool blue-white light flickers through the narrow gap in the door, casting shifting rectangles of monitor glow across the opposite wall and hardwood floor. A faded skateboard brand poster hangs on the closed door, barely visible in the darkness. A small warm amber nightlight plugged into a wall outlet near the baseboard provides the only other light source, creating a gentle orange pool at floor level. The hallway walls show framed family photos dissolving into shadow. The camera glides forward at waist height, smooth and steady, drawn toward the flickering light. Stylized 3D animation with soft rounded geometry, warm diffused lighting, and slightly exaggerated proportions. 35mm f/2.8, shallow depth of field, deep navy shadows against warm amber and cool blue highlights, 180-degree shutter, natural motion blur." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Dolly-In \
   --lora-weight-name ltx-2-19b-lora-camera-control-dolly-in.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6001
+  --width 1920 --height 1088 --num-frames 97 --seed 6001
 
 # ---------------------------------------------------------------------------
 # CLIP 2 — "The Player"
@@ -102,7 +102,7 @@ run_render "clip02_the_player" \
   --prompt "A close-up of a twelve-year-old boy framed from the chest up, lit entirely by the cool blue-white glow of an unseen computer monitor directly in front of him. His messy brown hair falls across his forehead. His wide eyes dart left and right, reflecting tiny points of shifting screen light. His mouth hangs slightly open in deep concentration as he leans forward, gripping something below frame. Oversized silver headphones rest around his neck. Behind him the dark bedroom dissolves into warm shadow — the edge of an unmade bed with rumpled sheets, clothes heaped on the floor, a half-empty glass of milk catching the monitor light on the desk edge. The camera holds steady at the boy's eye level, tripod-locked. Stylized 3D animation with soft diffused lighting, rounded features, big expressive eyes, slightly exaggerated proportions. 50mm f/1.8, shallow depth of field, cool blue key light wrapping around warm skin tones, 180-degree shutter." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Static \
   --lora-weight-name ltx-2-19b-lora-camera-control-static.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6002
+  --width 1920 --height 1088 --num-frames 97 --seed 6002
 
 # ---------------------------------------------------------------------------
 # CLIP 3 — "The Machine"
@@ -114,7 +114,7 @@ run_render "clip03_the_machine" \
   --prompt "A low-angle shot looking upward at a chunky beige desktop PC tower sitting on dark blue carpet beside a wooden desk leg. The tower is large and boxy with rounded plastic edges, early 2000s design. A bright green power LED glows steadily on the front panel. Two smaller amber indicator lights blink in an alternating rhythm. Round colorful stickers decorate the beige side panel — a yellow smiley face, a peeling price tag, a scratched barcode. Faint warm air ripples from the fan vent grille on the lower side. The desk above frames the top of the shot, with dangling headphone cables and a power strip. The camera holds perfectly still, locked low to the ground, framing the PC tower like a character portrait. Stylized 3D animation with warm golden tones on the beige plastic, slightly oversized chunky proportions, soft diffused ambient light. 35mm f/2.8, deep focus, warm amber and gold against cool blue ambient spill from the monitor above, 180-degree shutter, stabilized footage." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Static \
   --lora-weight-name ltx-2-19b-lora-camera-control-static.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6003
+  --width 1920 --height 1088 --num-frames 97 --seed 6003
 
 # ---------------------------------------------------------------------------
 # CLIP 4 — "The Mistake"
@@ -127,7 +127,7 @@ run_render "clip04_the_mistake" \
   --prompt "An over-the-shoulder shot from behind a boy sitting at a desk, his dark silhouette framed against the bright glow of a computer monitor. His small hands hammer frantically at a chunky beige keyboard in the foreground, fingers blurred with rapid motion. The monitor casts rapidly shifting light across his messy hair and the back of his worn gray t-shirt — flashing red and orange, then white, then red again, the colors of an intense action sequence. His shoulders hunch and tense, his whole body rocking slightly with each keypress. The desk around the keyboard is cluttered with a glass of milk, crumpled papers, and a mouse pad with a faded logo. The camera holds steady behind him at shoulder height, framing both the boy and the flashing screen. Stylized 3D animation with soft rounded proportions, warm room tones, rich saturated screen-light color spill. 50mm f/2, shallow depth of field with the keyboard softly blurred in foreground, 180-degree shutter, natural motion blur." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Static \
   --lora-weight-name ltx-2-19b-lora-camera-control-static.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6004
+  --width 1920 --height 1088 --num-frames 97 --seed 6004
 
 # ---------------------------------------------------------------------------
 # CLIP 5 — "The Death"
@@ -139,7 +139,7 @@ run_render "clip05_the_death" \
   --prompt "A tight close-up filling the entire frame with the curved glass surface of a CRT computer monitor. The screen blazes bright red, then slowly dims and fades through dark crimson to a deep blue-black static glow over four seconds. As the bright colors drain away, the faint ghostly reflection of a young boy becomes visible in the darkening glass — his small rounded silhouette slumping backward in a chair, shoulders dropping in defeat. The monitor's glass surface catches subtle room reflections — the edge of a desk lamp, a distant doorway. The screen settles into a dim steady glow with soft color bands drifting across the surface. The camera holds perfectly still, locked tight on the monitor face, intimate and unflinching. Stylized 3D animation with rich saturated reds fading to cool deep blues, soft glass reflections, slightly curved CRT screen distortion. Macro lens at f/2.8, shallow depth of field, 180-degree shutter." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Static \
   --lora-weight-name ltx-2-19b-lora-camera-control-static.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6005
+  --width 1920 --height 1088 --num-frames 97 --seed 6005
 
 # ---------------------------------------------------------------------------
 # CLIP 6 — "The Question"
@@ -153,7 +153,7 @@ run_render "clip06_the_question" \
   --prompt "A wide shot from the corner of a dark bedroom showing the entire room. A twelve-year-old boy sits slumped deep in a worn office chair at a wooden desk, his body language heavy and defeated, bathed in the soft blue-white glow of a computer monitor showing a dim static screen. The room around him is warmly cluttered — unmade bed with rumpled blankets against the far wall, clothes scattered on the carpet, posters on the walls fading into darkness. On the floor beside the desk, the chunky beige PC tower sits with its green power LED glowing steadily. The boy slowly reaches his right hand toward the mouse on the desk, lazy and reluctant. The camera holds still from the room corner, framing the full scene like a portrait of solitude and warm exhaustion. Stylized 3D animation with soft rounded geometry, warm navy shadows, cool blue monitor light mixing with deep amber undertones, cozy nostalgic atmosphere. 16mm wide angle, deep focus, 180-degree shutter, natural motion blur, stabilized footage." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Static \
   --lora-weight-name ltx-2-19b-lora-camera-control-static.safetensors \
-  --width 1920 --height 1088 --num-frames 97 --no-fp8 --seed 6006
+  --width 1920 --height 1088 --num-frames 97 --seed 6006
 
 # ---------------------------------------------------------------------------
 
