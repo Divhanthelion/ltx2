@@ -5,8 +5,9 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-INPUT_DIR="$SCRIPT_DIR/outputs/batch1"
-OUTPUT_DIR="$SCRIPT_DIR/outputs/batch1_postprocessed"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+INPUT_DIR="$REPO_ROOT/outputs/batch1"
+OUTPUT_DIR="$REPO_ROOT/outputs/batch1_postprocessed"
 
 mkdir -p "$OUTPUT_DIR"
 

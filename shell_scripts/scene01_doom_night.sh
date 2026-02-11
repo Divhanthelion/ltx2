@@ -8,7 +8,7 @@
 TOTAL=6
 CURRENT=0
 START_TIME=$(date +%s)
-OUTPUT_DIR=~/ltx2/outputs
+OUTPUT_DIR="$(pwd)/outputs"
 BATCH_DIR="$OUTPUT_DIR/scene01_doom_night"
 LOG="$BATCH_DIR/scene01_log.txt"
 
