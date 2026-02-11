@@ -6,7 +6,9 @@
 TOTAL=12
 CURRENT=0
 START_TIME=$(date +%s)
-OUTPUT_DIR="$(pwd)/outputs"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+OUTPUT_DIR="$REPO_ROOT/outputs"
 BATCH_DIR="$OUTPUT_DIR/batch1"
 LOG="$BATCH_DIR/batch1_log.txt"
 

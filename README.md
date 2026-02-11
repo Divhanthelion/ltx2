@@ -156,7 +156,7 @@ huggingface-cli download Lightricks/LTX-2-19b-LoRA-Camera-Control-Static
 # Distilled model (default) — ~17 min per clip
 sudo docker run --rm --runtime=nvidia --privileged \
   -v ~/.cache/huggingface:/root/.cache/huggingface \
-  -v ~/ltx2/outputs:/outputs ltx2 \
+  -v "$(pwd)/outputs":/outputs ltx2 \
   --prompt "A slow dolly-in through a rain-soaked alleyway in Taipei at 2 AM. Neon signs reflect off wet cobblestones in smeared reds and electric blues. Steam rises from a vendor cart, catching the colored light. 35mm f/2.8, shallow depth of field, Kodak Vision3 500T, 180-degree shutter, natural motion blur." \
   --lora Lightricks/LTX-2-19b-LoRA-Camera-Control-Dolly-In \
   --lora-weight-name ltx-2-19b-lora-camera-control-dolly-in.safetensors \
@@ -174,7 +174,7 @@ If the VAE decode OOMs, latents are auto-saved. Decode them later:
 ```bash
 sudo docker run --rm --runtime=nvidia --privileged \
   -v ~/.cache/huggingface:/root/.cache/huggingface \
-  -v ~/ltx2/outputs:/outputs ltx2 \
+  -v "$(pwd)/outputs":/outputs ltx2 \
   decode --input /outputs/video_latents.npz --output /outputs/recovered.mp4
 ```
 
@@ -185,7 +185,7 @@ sudo docker run --rm --runtime=nvidia --privileged \
 | `--prompt` | (required) | Plain natural language prompt paragraph |
 | `--negative-prompt` | `""` | Negative prompt (see [note on negative prompts](#negative-prompts-do-not-work-with-the-distilled-model)) |
 | `--model` | `rootonchair/LTX-2-19b-distilled` | HuggingFace model ID. For the full (non-distilled) model, use `Lightricks/LTX-2` with `--guidance-scale 3.5 --steps 40` |
-| `--output` | `/outputs/video.mp4` | Output path (timestamp auto-appended) |
+| `--output` | `video.mp4` | Output path (timestamp auto-appended) |
 | `--width` | `512` | Width (must be divisible by 32) |
 | `--height` | `768` | Height (must be divisible by 32) |
 | `--num-frames` | `97` | Frame count (must be `8n+1`: 9, 17, 25... 97, 121, 161, 257) |
@@ -223,7 +223,7 @@ huggingface-cli download Lightricks/LTX-2 \
 ```bash
 sudo docker run --rm --runtime=nvidia --privileged \
   -v ~/.cache/huggingface:/root/.cache/huggingface \
-  -v ~/ltx2/outputs:/outputs ltx2 \
+  -v "$(pwd)/outputs":/outputs ltx2 \
   --model Lightricks/LTX-2 \
   --prompt "A slow dolly-in through a rain-soaked alleyway in Taipei at 2 AM. Neon signs reflect off wet cobblestones in smeared reds and electric blues. Steam rises from a vendor cart, catching the colored light. 35mm f/2.8, shallow depth of field, Kodak Vision3 500T, 180-degree shutter, natural motion blur." \
   --negative-prompt "low quality, blurry, jittery, inconsistent motion, distorted, warped" \
