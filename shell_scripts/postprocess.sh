@@ -40,7 +40,8 @@ shift 2
 # Check image exists
 if ! docker image inspect ltx2-postprocess &>/dev/null; then
     echo "Building postprocess image (one-time setup)..."
-    docker build -f "$(dirname "$0")/Dockerfile.postprocess" -t ltx2-postprocess "$(dirname "$0")"
+    REPO_ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+    docker build -f "$REPO_ROOT/Dockerfile.postprocess" -t ltx2-postprocess "$REPO_ROOT"
 fi
 
 docker run --rm --runtime=nvidia \

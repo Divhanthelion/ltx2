@@ -14,7 +14,7 @@ if [ $# -eq 0 ]; then
     echo "  --no-fp8              Disable FP8 quantization"
     echo "  --steps N             Inference steps (default: 8 for distilled)"
     echo "  --vae-chunk-frames N  VAE decode chunk size (auto if not set)"
-    echo "  --output PATH         Output path (default: /outputs/video.mp4)"
+    echo "  --output PATH         Output path (default: video.mp4)"
     echo ""
     exec /bin/bash
 fi

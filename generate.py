@@ -33,7 +33,7 @@ def parse_args():
     p.add_argument("--model", type=str,
                     default="rootonchair/LTX-2-19b-distilled",
                     help="HF model ID (diffusers format)")
-    p.add_argument("--output", type=str, default="/outputs/video.mp4",
+    p.add_argument("--output", type=str, default="video.mp4",
                     help="Output video path")
 
     # Generation params — distilled defaults
@@ -167,7 +167,7 @@ def _flush_frames_to_raw(raw_file, tensor):
     return t, h, w
 
 
-def chunked_vae_decode(pipe, latents, chunk_size, overlap=2):
+def chunked_vae_decode(pipe, latents, chunk_size, overlap=2, output_dir=None):
     """Decode latents through VAE in temporal chunks, streaming frames to disk.
 
     Uses overlapping chunks with linear crossfade blending at boundaries.
@@ -179,6 +179,7 @@ def chunked_vae_decode(pipe, latents, chunk_size, overlap=2):
         latents: Full latent tensor [B, C, T, H, W]
         chunk_size: Number of latent temporal frames per chunk
         overlap: Extra latent frames on each side for temporal context
+        output_dir: Directory to store temporary raw frames file
 
     Returns:
         (raw_file_path, frame_count, height, width) tuple.
@@ -194,7 +195,7 @@ def chunked_vae_decode(pipe, latents, chunk_size, overlap=2):
         latents = latents.to(dtype=vae_dtype)
 
     raw_fd = tempfile.NamedTemporaryFile(suffix='.raw', delete=False,
-                                         dir=os.path.dirname("/outputs/"))
+                                         dir=output_dir)
     raw_path = raw_fd.name
     frame_count = 0
     out_h = out_w = 0
@@ -456,7 +457,8 @@ def main():
     args.output = f"{base}_{stamp}{ext}"
 
     # Ensure output directory exists early
-    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+    output_dir = os.path.dirname(os.path.abspath(args.output))
+    os.makedirs(output_dir, exist_ok=True)
 
     print(f"=" * 60)
     print(f"LTX-2 Video Generation")
@@ -668,7 +670,7 @@ def main():
     audio_tmp = None
     try:
         raw_path, frame_count, dec_h, dec_w = chunked_vae_decode(
-            pipe, latents, chunk_size)
+            pipe, latents, chunk_size, output_dir=output_dir)
 
         # Free everything — frames are on disk now
         del latents

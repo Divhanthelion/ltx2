@@ -54,7 +54,7 @@ def extract_audio(input_path):
     return audio_tmp, has_audio
 
 
-def run_rife(input_path, output_path, exp, target_fps=None):
+def run_rife(input_path, output_path, exp, target_fps=None, rife_dir="/opt/rife"):
     """Run RIFE frame interpolation using the model directly."""
     import cv2
     import torch
@@ -80,7 +80,6 @@ def run_rife(input_path, output_path, exp, target_fps=None):
 
     # Load RIFE model
     print("  Loading RIFE model...")
-    rife_dir = "/opt/rife"
     sys.path.insert(0, rife_dir)
     from train_log.RIFE_HDv3 import Model
     model = Model()
@@ -183,7 +182,7 @@ def run_rife(input_path, output_path, exp, target_fps=None):
     return True
 
 
-def run_realesrgan(input_path, output_path, scale):
+def run_realesrgan(input_path, output_path, scale, model_dir="/opt/realesrgan"):
     """Run Real-ESRGAN spatial upscaling."""
     print(f"\n{'='*60}")
     print(f"Real-ESRGAN Spatial Upscale ({scale}x)")
@@ -257,9 +256,9 @@ def run_realesrgan(input_path, output_path, scale):
             netscale = 4
 
         # Download model weights if needed
-        model_path = f"/opt/realesrgan/{model_name}.pth"
+        model_path = os.path.join(model_dir, f"{model_name}.pth")
         if not os.path.exists(model_path):
-            os.makedirs("/opt/realesrgan", exist_ok=True)
+            os.makedirs(model_dir, exist_ok=True)
             url = f"https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/{model_name}.pth"
             print(f"  Downloading model: {model_name}...")
             import urllib.request
@@ -318,6 +317,10 @@ def main():
                    help="Spatial upscale factor (2x or 4x)")
     p.add_argument("--target-fps", type=int, default=None,
                    help="Re-encode at this FPS after interpolation (e.g. 60)")
+    p.add_argument("--rife-dir", type=str, default="/opt/rife",
+                   help="Path to RIFE model directory (default: /opt/rife)")
+    p.add_argument("--realesrgan-dir", type=str, default="/opt/realesrgan",
+                   help="Path to Real-ESRGAN model directory (default: /opt/realesrgan)")
     args = p.parse_args()
 
     if not args.interpolate and not args.upscale:
@@ -335,14 +338,14 @@ def main():
         else:
             interp_out = args.output
 
-        if not run_rife(current_input, interp_out, exp, args.target_fps):
+        if not run_rife(current_input, interp_out, exp, args.target_fps, rife_dir=args.rife_dir):
             sys.exit(1)
         current_input = interp_out
 
     # Step 2: Spatial upscaling (if requested)
     if args.upscale:
         scale = 2 if args.upscale == "2x" else 4
-        if not run_realesrgan(current_input, args.output, scale):
+        if not run_realesrgan(current_input, args.output, scale, model_dir=args.realesrgan_dir):
             sys.exit(1)
 
         # Clean up intermediate if we did both steps

@@ -6,7 +6,7 @@
 TOTAL=12
 CURRENT=0
 START_TIME=$(date +%s)
-OUTPUT_DIR=~/ltx2/outputs
+OUTPUT_DIR="$(pwd)/outputs"
 BATCH_DIR="$OUTPUT_DIR/batch3_robots"
 LOG="$BATCH_DIR/batch3_log.txt"
 

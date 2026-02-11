@@ -2,8 +2,8 @@
 """Decode saved latent backups from failed/OOM runs into video.
 
 Usage:
-    python3 decode_latents.py --input /outputs/video_latents.npz --output /outputs/video.mp4
-    python3 decode_latents.py --input /outputs/video_latents.npz --output /outputs/video.mp4 --vae-chunk-frames 4
+    python3 decode_latents.py --input video_latents.npz --output video.mp4
+    python3 decode_latents.py --input video_latents.npz --output video.mp4 --vae-chunk-frames 4
 """
 
 import argparse
